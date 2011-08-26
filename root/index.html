@@ -1,0 +1,36 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"> 
+<html> 
+    <head> 
+	<script src='/js/jquery.js' type='text/javascript'></script>
+	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+	    google.load('payments', '1.0', {
+		'packages': ['sandbox_config']
+	    });
+	</script>
+    </head> 
+    <body> 
+	<button class="buy-button" id="buybutton1" name="buy" type="button" onClick="purchase()">Buy</button>
+    </body> 
+    <script>
+	//Success handler
+	var successHandler = function(purchaseAction){
+	    alert("Purchase completed successfully.");
+	}
+
+	//Failure handler
+	var failureHandler = function(purchaseActionError){
+	    alert("Purchase did not complete.");
+	}
+
+	function purchase(){
+	    $.get('/item', function(data) {
+		goog.payments.inapp.buy({
+		    'jwt'     : data,
+		    'success' : successHandler,
+		    'failure' : failureHandler
+		});
+	    });
+	}
+    </script>
+</html> 
